@@ -1,4 +1,4 @@
-package com.eventostec.api.domain.service;
+package com.eventostec.api.service;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.eventostec.api.domain.event.Event;
