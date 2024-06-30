@@ -33,6 +33,7 @@ public class EventService {
     @Autowired
     private EventRepository repository;
 
+    private AddressService addressService;
 
     public List<EventResponseDTO> getUpcomingEvents(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
@@ -67,6 +68,10 @@ public class EventService {
         newEvent.setEvent_url(data.eventUrl());
 
         repository.save(newEvent);
+
+        if(!data.remote()) {
+            this.addressService.createAddress(data, newEvent);
+        }
 
         return newEvent;
     }
