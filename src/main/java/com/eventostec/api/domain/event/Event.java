@@ -25,10 +25,11 @@ public class Event {
     private String title;
     private String description;
     private Date date;
-    private boolean remote;
+    private Boolean remote;
     private String img_url;
     private String event_url;
 
     @OneToOne(mappedBy = "event", cascade = CascadeType.ALL)
     private Address address;
+
 }
