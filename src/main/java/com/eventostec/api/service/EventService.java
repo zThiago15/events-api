@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -64,7 +66,7 @@ public class EventService {
         newEvent.setDate(new Date(data.date()));
         newEvent.setRemote(data.remote());
 
-        newEvent.setImg_url(uploadImg(data.image()));
+        newEvent.setImg_url(imgUrl);
         newEvent.setEvent_url(data.eventUrl());
 
         repository.save(newEvent);
@@ -91,6 +93,15 @@ public class EventService {
             System.out.println("Erro ao subir arquivo");
             return "";
         }
+    }
+
+    public List<EventResponseDTO> getFilteredEvents(int page, int size, String title, String description, String city, String uf, Date startDate, Date endDate) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Event> eventsPage = repository.findFilteredEvents(new Date(), title, city, uf, startDate, endDate, pageable);
+
+
+        return eventsPage.map(event -> new EventResponseDTO(event.getId(), event.getTitle(), event.getDescription(), event.getDate(), "", "", event.getRemote(), event.getEvent_url(), event.getImg_url()))
+                .stream().toList();
     }
 
     private File convertMultipartToFile(MultipartFile multipartFile) throws IOException {
