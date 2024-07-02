@@ -1,11 +1,11 @@
 package com.eventostec.api.controller;
 
 import com.eventostec.api.domain.event.Event;
+import com.eventostec.api.domain.event.EventDetailsDTO;
 import com.eventostec.api.domain.event.EventRequestDTO;
 import com.eventostec.api.domain.event.EventResponseDTO;
 import com.eventostec.api.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,8 +30,8 @@ public class EventController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<EventResponseDTO> getEvent(@PathVariable UUID id) {
-        EventResponseDTO event = eventService.getEventById(id);
+    public ResponseEntity<EventDetailsDTO> getEvent(@PathVariable UUID id) {
+        EventDetailsDTO event = eventService.getEventById(id);
         return ResponseEntity.ok(event);
     }
 

@@ -1,7 +1,9 @@
 package com.eventostec.api.service;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.eventostec.api.domain.coupon.Coupon;
 import com.eventostec.api.domain.event.Event;
+import com.eventostec.api.domain.event.EventDetailsDTO;
 import com.eventostec.api.domain.event.EventRequestDTO;
 import com.eventostec.api.domain.event.EventResponseDTO;
 import com.eventostec.api.repositories.EventRepository;
@@ -18,10 +20,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class EventService {
@@ -37,6 +37,9 @@ public class EventService {
 
     @Autowired
     private AddressService addressService;
+
+    @Autowired
+    private CouponService couponService;
 
     public List<EventResponseDTO> getUpcomingEvents(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
@@ -133,9 +136,20 @@ public class EventService {
         ).stream().toList();
     }
 
-    public EventResponseDTO getEventById(UUID id) {
+    public EventDetailsDTO getEventById(UUID id) {
         Event event = repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Event not found"));;
-        return new EventResponseDTO(
+
+        List<Coupon> coupons = couponService.consultCoupons(id, new Date());
+
+        // Assign returned coupons to a list of EventDetailsDTO
+        List<EventDetailsDTO.CouponDTO> couponsDTOs = coupons.stream()
+                .map(coupon -> new EventDetailsDTO.CouponDTO(
+                        coupon.getCode(),
+                        coupon.getDiscount(),
+                        coupon.getValid()
+                )).collect(Collectors.toList());
+
+        return new EventDetailsDTO(
                 event.getId(),
                 event.getTitle(),
                 event.getDescription(),
@@ -144,7 +158,8 @@ public class EventService {
                 event.getAddress() != null ? event.getAddress().getCity() : "",
                 event.getRemote(),
                 event.getEvent_url(),
-                event.getImg_url()
+                event.getImg_url(),
+                couponsDTOs
         );
     }
 
