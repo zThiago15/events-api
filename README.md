@@ -39,14 +39,14 @@ API onde é possível realizar filtragem de eventos que ainda irão acontecer, c
 
 | Parâmetro   | Tipo       | Descrição                           |
 | :---------- | :--------- | :---------------------------------- |
-| `title` | `string` | **Obrigatório**: Título do evento |
-| `description` | `string` | *Opcional*: Descrição do evento |
-| `date` | `long` | **Obrigatório**: Data marcada do evento |
-| `city` | `string` | **Obrigatório**: Cidade |
-| `uf` | `string` | **Obrigatório**: Estado |
-| `remote` | `boolean` | **Obrigatório**: Remoto ou presencial |
-| `eventUrl` | `string` | **Obrigatório**: URL para visualizar ou se cadastrar no evento |
-| `image` | `multipartFile` | *Opcional*: Banner do evento |
+| `title` | `string` | Título do evento(Obrigatório) |
+| `description` | `string` | Descrição do evento(Opcional) |
+| `date` | `long` | Data marcada do evento(Obrigatório) |
+| `city` | `string` | Cidade(Obrigatório) |
+| `uf` | `string` | Estado(Obrigatório) |
+| `remote` | `boolean` | Remoto ou presencial(Obrigatório) |
+| `eventUrl` | `string` | URL para visualizar ou se cadastrar no evento(Obrigatório) |
+| `image` | `multipartFile` | Banner do evento(Opcional) |
 
 Corpo da requição:
 ```json
