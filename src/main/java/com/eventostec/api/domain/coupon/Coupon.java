@@ -24,7 +24,7 @@ public class Coupon {
 
     @ManyToOne
     @JoinColumn(name="event_id")
-    private Event event_id;
+    private Event event;
 
     private Integer discount;
     private String code;
