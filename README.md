@@ -8,7 +8,7 @@ API onde é possível realizar filtragem de eventos que ainda irão acontecer, c
 
 ## Documentação da API 🔍
 
-### 1. Retorna todos os eventos
+### 1. Retornar todos os eventos
 
 ```http
   GET /api/event?page={value1}&size={value2}
@@ -62,8 +62,12 @@ Corpo da requição:
     }
 ```
 ## Tecnologias utilizadas 💻
-
-**Back-end:** Java, Spring Boot, AWS S3 Bucket, JDBC Driver, Insomnia, PostgreSQL,
+- Java
+- Spring Boot
+- AWS S3 Bucket
+- JDBC Driver
+- Insomnia
+- PostgreSQL
 
 
 ## Referência
