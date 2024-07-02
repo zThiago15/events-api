@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -31,5 +32,9 @@ public class CouponService {
         coupon.setValid(new Date(couponData.valid()));
 
         return couponRepository.save(coupon);
+    }
+
+    public List<Coupon> consultCoupons(UUID eventId, Date currentDate) {
+        return couponRepository.findByEventIdAndValidAfter(eventId, currentDate);
     }
 }
