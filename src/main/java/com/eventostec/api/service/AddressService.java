@@ -14,13 +14,13 @@ public class AddressService {
     @Autowired
     private AddressRepository addressRepository;
 
-    public Address createAddress(EventRequestDTO data, Event event) {
+    public void createAddress(EventRequestDTO data, Event event) {
         Address newAddress = new Address();
 
         newAddress.setCity(data.city());
         newAddress.setUf(data.uf());
         newAddress.setEvent(event);
 
-        return addressRepository.save(newAddress);
+        addressRepository.save(newAddress);
     }
 }

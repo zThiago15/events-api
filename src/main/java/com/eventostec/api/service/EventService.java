@@ -35,6 +35,7 @@ public class EventService {
     @Autowired
     private EventRepository repository;
 
+    @Autowired
     private AddressService addressService;
 
     public List<EventResponseDTO> getUpcomingEvents(int page, int size) {
@@ -46,9 +47,11 @@ public class EventService {
                 event.getTitle(),
                 event.getDescription(),
                 event.getDate(),
+                event.getAddress() != null ? event.getAddress().getCity() : "",
+                event.getAddress() !=null ? event.getAddress().getUf() : "",
+                event.getRemote(),
                 event.getEvent_url(),
-                event.getImg_url(),
-                event.isRemote()
+                event.getImg_url()
                 )).stream().toList();
 
     }
@@ -72,7 +75,7 @@ public class EventService {
         repository.save(newEvent);
 
         if(!data.remote()) {
-            this.addressService.createAddress(data, newEvent);
+            addressService.createAddress(data, newEvent);
         }
 
         return newEvent;
@@ -95,15 +98,6 @@ public class EventService {
         }
     }
 
-    public List<EventResponseDTO> getFilteredEvents(int page, int size, String title, String description, String city, String uf, Date startDate, Date endDate) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Event> eventsPage = repository.findFilteredEvents(new Date(), title, city, uf, startDate, endDate, pageable);
-
-
-        return eventsPage.map(event -> new EventResponseDTO(event.getId(), event.getTitle(), event.getDescription(), event.getDate(), "", "", event.getRemote(), event.getEvent_url(), event.getImg_url()))
-                .stream().toList();
-    }
-
     private File convertMultipartToFile(MultipartFile multipartFile) throws IOException {
 
         File convFile = new File(Objects.requireNonNull(multipartFile.getOriginalFilename()));
@@ -113,4 +107,46 @@ public class EventService {
 
         return convFile;
     }
+
+    public List<EventResponseDTO> getFilteredEvents(
+            int page,
+            int size,
+            String title,
+            String city,
+            String uf,
+            Date startDate,
+            Date endDate
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Event> eventsPage = repository.findFilteredEvents(title, city, uf, startDate, endDate, pageable);
+
+
+        return eventsPage.map(event -> new EventResponseDTO(
+                event.getId(), event.getTitle(),
+                event.getDescription(),
+                event.getDate(),
+                event.getAddress() != null ? event.getAddress().getCity() : "",
+                event.getAddress() != null ? event.getAddress().getUf() : "",
+                event.getRemote(),
+                event.getEvent_url(),
+                event.getImg_url())
+        ).stream().toList();
+    }
+
+    public EventResponseDTO getEventById(UUID id) {
+        Event event = repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Event not found"));;
+        return new EventResponseDTO(
+                event.getId(),
+                event.getTitle(),
+                event.getDescription(),
+                event.getDate(),
+                event.getAddress() != null ? event.getAddress().getUf() : "",
+                event.getAddress() != null ? event.getAddress().getCity() : "",
+                event.getRemote(),
+                event.getEvent_url(),
+                event.getImg_url()
+        );
+    }
+
+
 }

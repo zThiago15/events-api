@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/event")
@@ -20,6 +21,20 @@ public class EventController {
 
     @Autowired
     private EventService eventService;
+
+    @GetMapping
+    public ResponseEntity<List<EventResponseDTO>> getAllEvents(@RequestParam(defaultValue = "0") int page, @RequestParam int size) {
+        List<EventResponseDTO> allEvents = this.eventService.getUpcomingEvents(page, size);
+
+        return ResponseEntity.ok(allEvents);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<EventResponseDTO> getEvent(@PathVariable UUID id) {
+        EventResponseDTO event = eventService.getEventById(id);
+        return ResponseEntity.ok(event);
+    }
+
 
     @PostMapping(consumes = "multipart/form-data")
     public ResponseEntity<Event> create(
@@ -38,25 +53,18 @@ public class EventController {
         return ResponseEntity.ok(newEvent);
     }
 
-    @GetMapping
-    public ResponseEntity<List<EventResponseDTO>> getAllEvents(@RequestParam(defaultValue = "0") int page, @RequestParam int size) {
-        List<EventResponseDTO> allEvents = this.eventService.getUpcomingEvents(page, size);
-
-        return ResponseEntity.ok(allEvents);
-    }
 
     @GetMapping("/filter")
     public ResponseEntity<List<EventResponseDTO>> getFilteredEvents(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam int size,
+            @RequestParam(defaultValue = "10") int size,
             @RequestParam(required = false) String title,
-            @RequestParam(required = false) String description,
             @RequestParam(required = false) String city,
             @RequestParam(required = false) String uf,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date startDate,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date endDate
             ) {
-        List<EventResponseDTO> events = eventService.getFilteredEvents(page, size, title, description, city, uf, startDate, endDate);
+        List<EventResponseDTO> events = eventService.getFilteredEvents(page, size, title, city, uf, startDate, endDate);
         return ResponseEntity.ok(events);
     }
 
