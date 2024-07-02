@@ -62,8 +62,12 @@ Corpo da requição:
     }
 ```
 ## Tecnologias utilizadas 💻
-
-**Back-end:** Java, Spring Boot, AWS S3 Bucket, JDBC Driver, Insomnia, PostgreSQL,
+- Java
+- Spring Boot
+- AWS S3 Bucket
+- JDBC Driver
+- Insomnia
+- PostgreSQL
 
 
 ## Referência
