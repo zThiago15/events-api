@@ -61,14 +61,31 @@ Corpo da requição:
         "image": File
     }
 ```
+
+### 4. Retornar evento por ID
+
+```http
+  GET /api/event/{id}
+```
+
+| Parâmetro | Tipo     | Descrição                                                                                               |
+|:----------|:---------|:--------------------------------------------------------------------------------------------------------|
+| `id`       | `UUID`   | *Obrigatório*: Id de um evento registrado. Retorno de mensagem de erro caso evento não seja encontrado. |
+
+
 ## Tecnologias utilizadas 💻
 - Java
 - Spring Boot
 - AWS S3 Bucket
 - JDBC Driver
+- Supabase
 - Insomnia
 - PostgreSQL
 
+
+## Deploy 🚀
+Transição do projeto para nuvem utilizando AWS VPC, onde realizei as
+configurações de gateway de rede e uma sub-rede pública com 126 IPs disponíveis para conexão.
 
 ## Referência
 
