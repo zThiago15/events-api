@@ -80,6 +80,7 @@ Corpo da requição:
 - JDBC Driver
 - Supabase
 - Insomnia
+- Cache
 - PostgreSQL
 
 
@@ -91,7 +92,7 @@ configurações de gateway de rede e uma sub-rede pública com 126 IPs disponív
 
  - [AWS Bucket S3](https://aws.amazon.com/pt/s3/)
  - [Rest API with Spring Boot](https://spring.io/guides/tutorials/rest)
-
+ - [Spring Boot Data Redis](https://howtodoinjava.com/spring-data/spring-boot-redis-with-lettuce-jedis/#:~:text=To%20configure%20and%20connect%20using%20Lettuce%2C%20we%20need,eliminating%20the%20need%20to%20add%20any%20additional%20dependencies.)
 
 ## Licença ©️ 
 
