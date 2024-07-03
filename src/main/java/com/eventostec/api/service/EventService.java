@@ -9,12 +9,12 @@ import com.eventostec.api.domain.event.EventResponseDTO;
 import com.eventostec.api.repositories.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -24,6 +24,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@EnableCaching
 public class EventService {
 
     @Value("${aws.bucket.name}")
@@ -41,6 +42,7 @@ public class EventService {
     @Autowired
     private CouponService couponService;
 
+    @Cacheable("events")
     public List<EventResponseDTO> getUpcomingEvents(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Event> eventsPage = repository.findUpcomingEvents(new Date(), pageable);
@@ -136,6 +138,7 @@ public class EventService {
         ).stream().toList();
     }
 
+    @Cacheable("eventid")
     public EventDetailsDTO getEventById(UUID id) {
         Event event = repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Event not found"));;
 
